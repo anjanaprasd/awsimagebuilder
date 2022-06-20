@@ -1,0 +1,67 @@
+name: ssmCustomDocument
+description: Installs Apache Tomcat, sets required environment variables.
+schemaVersion: 1.0
+phases:
+  - name: build
+    steps:
+      - name: ConfigureAppUser
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+               mkdir -p /opt/app-data/
+               groupadd -g 602 appuser
+               useradd -m -s /bin/bash -u 601  -g 602 -d /opt/app-data/users/appuser -c "Application Admin User" appuser
+
+      - name: InstallTomcat
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+               sudo yum update -y
+               yum install java-1.8.0-openjdk -y
+               req_tom_ver="6.0.35"
+               tom_m_v=$(echo $req_tom_ver|cut -c 1)
+               tom_h_dir/opt/app-data/
+               application_user=appuser
+               mkdir -p $tom_h_dir && cd $tom_h_dir 
+               url="https://archive.apache.org/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-${req_tom_ver}.zip"
+               wget $url
+               unzip -q apache-tomcat-${req_tom_ver} && chown -R $application_user:$application_user $tom_h_dir
+               rm -rf apache-tomcat-${req_tom_ver}.zip && chmod +x $tom_h_dir/apache-tomcat-${req_tom_ver}/bin/*.sh
+
+      - name: TomcatService
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              VERSION="6.0.35"
+              touch TomcatonStartup
+              cat > TomcatonStartup << EOF
+              [Unit]
+              Description=ApacheTomcat$VERSION
+
+              [Service]
+              Type=forking
+              ExecStart=/export/home/apps/pearson/sms/apache-tomcat-$VERSION/bin/startup.sh
+
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+
+              sudo mv TomcatonStartup /etc/systemd/system/TomcatonStartup.service
+              sudo systemctl enable TomcatonStartup.service &> /dev/null && sudo systemctl start TomcatonStartup.service &> /dev/null
+
+      - name: ValidateOnPort8080
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              sudo systemctl start TomcatonStartup.service &> /dev/null
+              sleep 10
+              if [[ `netstat -tulpn | grep 8080` ]]; then
+                echo "Tomcat is Running on port 8080."
+              else
+                echo "Tomcat Service not start up properly. Failing."
+                exit 1
+              fi
