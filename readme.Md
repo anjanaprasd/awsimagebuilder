@@ -3,7 +3,7 @@ The terraform code will help you in deploying the AWS Image builder pipeline. In
  It contains custom application user configuration and configures Tomcat service on the new AMI.
 
 
-Install aws-cli and terraform packages in your local system.
+Before you execute this terraform code, Please make sure you have installed terraform and aws-cli in your local system.
 
 # aws configure.
 run aws configure command to authenticate with AWS. Once you execute the aws configure it will ask your 
