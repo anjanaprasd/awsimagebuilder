@@ -1,4 +1,4 @@
-####AWS Image Builder Pipeline Deployment with Terraform
+#### *AWS Image Builder Pipeline Deployment with Terraform*
 
 This Terraform code will help you deploy the AWS Image Builder pipeline to create an Amazon Machine Image (AMI) using a custom SSM playbook. The playbook includes configuration for a custom application user and sets up the Tomcat service on the new AMI.
 
