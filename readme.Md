@@ -1,32 +1,33 @@
-Hi Everyone.
-The terraform code will help you in deploying the AWS Image builder pipeline. In this scenario, I've used a custom SSM playbook to bake my AMI based on my pre-requisites to reduce the deployment time. 
- It contains custom application user configuration and configures Tomcat service on the new AMI.
+####AWS Image Builder Pipeline Deployment with Terraform
 
+This Terraform code will help you deploy the AWS Image Builder pipeline to create an Amazon Machine Image (AMI) using a custom SSM playbook. The playbook includes configuration for a custom application user and sets up the Tomcat service on the new AMI.
 
-Before you execute this terraform code, Please make sure you have installed terraform and aws-cli in your local system.
+Before you execute this Terraform code, ensure that you have installed Terraform and the AWS Command Line Interface (CLI) in your local system.
+AWS Configuration
 
-# aws configure.
-run aws configure command to authenticate with AWS. Once you execute the aws configure it will ask your 
+Use the following command to authenticate with AWS:
+
+aws configure
+
+The command will prompt you to enter the following details:
+
+makefile
+
 AWS_ACCESS_KEY = xxxxxxxxxxxxxx
 AWS_SECRET_KEY = xxxxxxxxxxxxxx
 REGION = xxxxxx
 
-Execute this code.
-# Step 01.
-Install terraform in your local system.
-# Step 02.
-Run terraform init command to download required API packages.
-# Step 03.
-Run terraform fmt command to format your code.
-# Step 04.
-terraform validate command to validate your command, this will ensure all code is valid.
-# Step 05.
-terraform plan command to see the execution plan before apply it to real enviroment.
-# Step 06.
-run terraform apply command.
+Execution Steps
 
-Terraform state file will be stored remotely in this scenario it's in the S3 bucket.
+Follow the below steps to execute the Terraform code:
 
+    Install Terraform in your local system.
+    Run the command terraform init to download the required API packages.
+    Run the command terraform fmt to format your code.
+    Run the command terraform validate to validate your code.
+    Run the command terraform plan to see the execution plan before applying it to a real environment.
+    Finally, run the command terraform apply to apply the Terraform code.
 
+Note that the Terraform state file will be stored remotely, in this scenario it is stored in the S3 bucket.
 
 
